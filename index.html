@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Still yes.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Edu+AU+VIC+WA+NT+Dots:wght@400..700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* 🍅 유진의 포인트 컬러: 여기서 한 번에 수정 가능! */
-            --point-color: #ff3e00; 
-            --bg-color: #f0f0f0;
+            --bg-color: #f2f2f2;
+            --main-font: 'Bebas Neue', cursive;
+            --sub-font: 'JetBrains Mono', monospace;
         }
 
         body, html {
@@ -23,121 +23,116 @@
             align-items: center;
         }
 
-        /* 배경 미세 격자 (종이 질감 대용) */
-        body::before {
-            content: "";
+        /* 🖼️ 디자인 밀도를 높여주는 배경 레이어 */
+        .grid-background {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: linear-gradient(#e0e0e0 1px, transparent 1px), linear-gradient(90deg, #e0e0e0 1px, transparent 1px);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px);
             background-size: 30px 30px;
-            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .frame-line {
+            position: fixed;
+            top: 40px; left: 40px; right: 40px; bottom: 40px;
+            border: 1px solid rgba(0,0,0,0.05);
             pointer-events: none;
+            z-index: 2;
         }
 
-        /* 🎟️ 1단계: 티켓 인트로 (질문이 담긴 박스) */
-        .ticket-intro {
+        /* ❓ 좌상단 질문: 무심하게 툭 */
+        .question {
             position: absolute;
-            width: 320px;
-            height: 140px;
-            background: #000;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 30px;
-            z-index: 100;
-            font-family: 'JetBrains Mono', monospace;
-            box-shadow: 20px 20px 0px rgba(0,0,0,0.05);
-            /* 왼쪽에서 오른쪽으로 슥- 지나가며 사라지는 연출 */
-            animation: ticketSlide 2.8s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+            top: 60px; left: 60px;
+            font-family: var(--sub-font);
+            font-size: 1rem;
+            color: rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            letter-spacing: 1px;
         }
 
-        .ticket-intro span { font-size: 0.6rem; opacity: 0.4; margin-bottom: 10px; }
-        .ticket-intro h2 { font-size: 1.1rem; margin: 0; letter-spacing: 1px; font-weight: 300; }
-
-        /* 📽️ 2단계: 메인 콘텐츠 (Still YES) */
+        /* 📽️ 메인 텍스트: 한 줄로 꽉 차게 */
         .main-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            opacity: 0;
-            animation: contentFadeIn 1s forwards 2.5s;
+            position: relative;
+            z-index: 10;
+            text-align: center;
         }
 
-        /* Still: 묵직하고 거대함 (The Substance 느낌) */
-        .still-text {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 28vw; /* 압도적 크기 */
-            line-height: 0.75;
+        .still-yes-text {
+            font-family: var(--main-font);
+            font-size: 22vw; /* 화면에 꽉 차는 한 줄 */
+            line-height: 0.8;
+            letter-spacing: -5px;
             color: #000;
             margin: 0;
-            letter-spacing: -2px;
-        }
-
-        /* YES: 작고 날카로운 점선 (150% 이상 차이) */
-        .yes-text {
-            font-family: 'Edu AU VIC WA NT Dots', cursive;
-            font-size: 8vw; 
-            color: #000;
-            cursor: pointer;
-            margin-top: 10px;
-            margin-left: 10px; /* 약간 어긋난 배치 */
-            transition: 0.3s;
-        }
-
-        .yes-text:hover {
-            color: var(--point-color);
-        }
-
-        /* 하단 데이터 라벨 (슬레이트 아이콘 포함) */
-        .footer-label {
-            position: absolute;
-            bottom: 30px;
-            right: 40px;
             display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: rgba(0,0,0,0.3);
+            gap: 2vw; /* Still과 YES 사이 간격 */
         }
 
-        .icon-slate { width: 18px; height: 18px; fill: currentColor; }
-
-        /* 애니메이션 키프레임 */
-        @keyframes ticketSlide {
-            0% { transform: translateX(-150%) skewX(-10deg); opacity: 0; }
-            30% { transform: translateX(0) skewX(0deg); opacity: 1; }
-            70% { transform: translateX(0); opacity: 1; }
-            100% { transform: translateX(250%) skewX(10deg); opacity: 0; }
+        .clickable-yes {
+            cursor: pointer;
+            position: relative;
+            user-select: none;
         }
 
-        @keyframes contentFadeIn {
-            from { opacity: 0; filter: blur(20px); transform: scale(0.95); }
-            to { opacity: 1; filter: blur(0); transform: scale(1); }
+        /* 💥 펀치 효과 레이어 */
+        .punch-hole {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: #000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            pointer-events: none;
+            transition: width 0.7s cubic-bezier(0.8, 0, 0.2, 1), height 0.7s cubic-bezier(0.8, 0, 0.2, 1);
+            display: flex; justify-content: center; align-items: center;
         }
+
+        .punch-icon {
+            width: 80px; height: 80px;
+            fill: #fff; opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* 클릭 시 상태 변화 */
+        .is-punched .punch-hole {
+            width: 350vw; height: 350vw;
+        }
+        .is-punched .punch-icon {
+            opacity: 1;
+        }
+
     </style>
 </head>
-<body>
+<body id="main-body">
 
-    <div class="ticket-intro">
-        <span>[ ARCHIVE ACCESS REQUEST ]</span>
-        <h2>YOU ARE STILL WATCHING THIS?</h2>
-        <div style="border-bottom: 1px dashed rgba(255,255,255,0.3); width: 100%; margin-top: 15px;"></div>
-    </div>
+    <div class="grid-background"></div>
+    <div class="frame-line"></div>
+
+    <div class="question">STILL WATCHING THIS?</div>
 
     <div class="main-container">
-        <h1 class="still-text">STILL</h1>
-        <span class="yes-text" onclick="location.href='main.html'">YES.</span>
+        <h1 class="still-yes-text">
+            <span>STILL</span> 
+            <span class="clickable-yes" onclick="handlePunch()">YES.</span>
+        </h1>
     </div>
 
-    <div class="footer-label">
-        <svg class="icon-slate" viewBox="0 0 24 24">
+    <div id="punch" class="punch-hole">
+        <svg class="punch-icon" viewBox="0 0 24 24">
             <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4h-2l2 4h-3l-2-4h-3v14h18v-14h-3z"/>
         </svg>
-        <span>EUGENE_PRIVATE_ARCHIVE_VER_0.1</span>
     </div>
+
+    <script>
+        function handlePunch() {
+            document.getElementById('main-body').classList.add('is-punched');
+            setTimeout(() => {
+                location.href = 'main.html';
+            }, 900);
+        }
+    </script>
 
 </body>
 </html>
