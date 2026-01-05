@@ -4,73 +4,79 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
         width: 100vw; height: 100vh;
-        position: relative;
+        background-image: linear-gradient(#eee 1px, transparent 1px), linear-gradient(90deg, #eee 1px, transparent 1px);
+        background-size: 100px 100px;
     }
 
-    .section { display: flex; justify-content: center; align-items: center; }
+    .section {
+        display: flex; justify-content: center; align-items: center;
+    }
 
-    /* 📦 택배 박스 스타일 */
-    .parcel-box {
-        width: 350px; height: 250px;
-        background: #d2a679; /* 박스 색상 */
+    /* 📦 거대한 택배 박스 (300% 스케일업) */
+    .parcel {
+        width: 450px; height: 320px;
+        background: #ba8b5d; /* 더 리얼한 박스색 */
         position: relative;
-        box-shadow: 15px 15px 30px rgba(0,0,0,0.1);
+        border-bottom: 4px solid #8d623a; /* 하단 입체감 */
         cursor: pointer;
     }
 
-    /* 박스 테이프 표현 */
-    .parcel-box::after {
-        content: ""; position: absolute;
-        top: 0; left: 50%; width: 60px; height: 100%;
-        background: rgba(0,0,0,0.1); /* 투명 테이프 느낌 */
+    /* 박스 테이프 흔적 */
+    .parcel::before {
+        content: ""; position: absolute; top: 0; left: 50%;
+        width: 80px; height: 100%;
+        background: rgba(255,255,255,0.15);
         transform: translateX(-50%);
+        border-left: 1px solid rgba(0,0,0,0.05);
+        border-right: 1px solid rgba(0,0,0,0.05);
     }
 
-    /* 📂 박스 개봉 (Hover) */
-    .content-card {
+    /* 📂 뜯긴 박스 위로 튀어나오는 카드 */
+    .reveal-card {
         position: absolute;
-        top: -20px; left: 50%;
-        width: 90%; height: 100%;
-        background: #fff;
-        transform: translateX(-50%) scaleY(0);
-        transform-origin: bottom;
-        transition: 0.4s;
+        top: 0; left: 50%; width: 100%; height: 100%;
+        background: #fff; border: 1px solid #ddd;
+        transform: translateX(-50%) translateY(0);
+        transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         display: flex; justify-content: center; align-items: center;
-        font-size: 3rem; z-index: 10;
-        border: 1px solid #ddd;
+        font-family: 'Bebas Neue'; font-size: 5rem;
+        z-index: 10; opacity: 0;
     }
-    .parcel-box:hover .content-card { transform: translateX(-50%) scaleY(1); }
 
-    /* 🌹 꽃다발 (중앙) */
-    .center-basket {
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        z-index: 5;
+    .parcel:hover .reveal-card {
+        transform: translateX(-50%) translateY(-50px); /* 위로 슥 올라옴 */
+        opacity: 1;
     }
-    .message-card {
-        background: #fff; padding: 20px;
-        border: 1px solid #000;
-        font-family: 'JetBrains Mono'; font-size: 1rem;
+
+    /* 🌹 중앙 장미 바구니 영역 */
+    .center-content {
+        position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 20; text-align: center;
+    }
+    
+    .flower-tag {
+        background: #fff; padding: 15px 30px;
+        border: 1px solid #000; font-family: 'JetBrains Mono';
+        font-size: 1.2rem;
     }
 </style>
 
 <div class="main-layout">
     <div class="section" style="grid-area: 1 / 1;">
-        <div class="parcel-box">
-            <div class="content-card">MOVIE</div>
+        <div class="parcel">
+            <div class="reveal-card">MOVIE</div>
         </div>
     </div>
     
-    <div class="center-basket">
-        <div style="font-size: 50px;">🌹🧺</div> 
-        <div class="message-card">THE SUBSTANCE (2024)</div>
+    <div class="center-content">
+        <div style="font-size: 80px; margin-bottom: 20px;">🌹</div>
+        <div class="flower-tag">THE SUBSTANCE (2024)</div>
     </div>
 
     <div class="section" style="grid-area: 2 / 2;">
-        <div class="parcel-box">
-            <div class="content-card">DRAMA</div>
+        <div class="parcel">
+            <div class="reveal-card">DRAMA</div>
         </div>
     </div>
 </div>
