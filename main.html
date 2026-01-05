@@ -1,62 +1,170 @@
-<style>
-    /* 배경은 유광 타일 유지 */
-    .star-grid {
-        display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-        width: 100vw; height: 100vh;
-    }
-
-    .section { display: flex; justify-content: center; align-items: center; }
-
-    /* ⭐ 명예의 거리 별 모양 */
-    .walk-star {
-        width: 300px; height: 300px;
-        background: #333; /* 어두운 대리석 느낌 */
-        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        display: flex; justify-content: center; align-items: center;
-        cursor: pointer; position: relative;
-    }
-
-    /* 🍔 햄버거 '퍽' 떨어지는 느낌의 카드 */
-    .burger-card {
-        position: absolute;
-        width: 220px; height: 220px;
-        background: #fff; border: 2px solid #000;
-        display: flex; justify-content: center; align-items: center;
-        font-family: 'Bebas Neue'; font-size: 4rem;
-        transform: scale(3); opacity: 0; /* 위에서 떨어지기 전 상태 */
-        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        pointer-events: none;
-    }
-
-    .walk-star:hover .burger-card {
-        transform: scale(1); opacity: 1; /* 퍽! 하고 별 중앙에 안착 */
-    }
-
-    /* 🌹 중앙 장미 (유광 타일 위 드라이하게 배치) */
-    .center-visual {
-        position: absolute; top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center; font-family: 'JetBrains Mono';
-    }
-</style>
-
-<div class="star-grid">
-    <div class="section" style="grid-area: 1 / 1;">
-        <div class="walk-star" onclick="location.href='movie.html'">
-            <div class="burger-card">MOVIE</div>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eugene's Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
     
-    <div class="center-visual">
-        <div style="font-size: 60px; filter: drop-shadow(0 0 10px rgba(255,0,0,0.5));">🌹</div>
-        <div style="border: 1px solid #000; padding: 10px; background: #fff; margin-top: 10px;">
-            THE SUBSTANCE (2024)
+    <style>
+        :root {
+            --main-font: 'Bebas Neue', cursive;
+            --sub-font: 'JetBrains Mono', monospace;
+            --star-color-base: #ffb6c1; /* 연한 핑크, 이미지 참고 */
+            --star-color-light: #fcd9df; /* 텍스처 베이스 */
+            --star-border-gold: #daa520; /* 금색 테두리 */
+            --bg-dark: #1a1a1a; /* 검은색 아스팔트 배경 */
+            --dot-color: rgba(255, 255, 255, 0.15); /* 흰색 도트 */
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: var(--bg-dark);
+            /* 🌌 검은색 아스팔트 + 흰색 도트 배경 */
+            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+            background-size: 8px 8px; /* 도트 간격 */
+            font-family: var(--main-font);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .star-grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            width: 100vw; height: 100vh;
+            position: relative;
+        }
+
+        .grid-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ⭐ 명예의 거리 별 스타일 */
+        .walk-of-fame-star {
+            width: 350px; height: 350px; /* 크기 키움 */
+            background-color: var(--star-color-base);
+            /* 이미지의 불규칙한 텍스처 표현 (노이즈 필터) */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="2" height="2" x="0" y="0" fill="%23fff" opacity=".1"/><rect width="2" height="2" x="2" y="2" fill="%23fff" opacity=".1"/></svg>');
+            background-size: 20px 20px; /* 텍스처 크기 조절 */
+
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            border: 8px solid var(--star-border-gold); /* 금색 테두리 */
+            box-shadow: 0 0 20px rgba(0,0,0,0.5); /* 그림자로 입체감 */
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .walk-of-fame-star:hover {
+            transform: scale(1.03); /* 살짝 커지며 반응 */
+        }
+
+        /* 별 중앙의 아이콘/명패 */
+        .star-center-plate {
+            width: 80px; height: 80px;
+            background: #bdb76b; /* 금색 메탈 느낌 */
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* 중앙 명패 안의 작은 디테일 (이미지 레퍼런스 참고) */
+        .star-center-plate::after {
+            content: '';
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.1);
+        }
+
+        /* ⭐ MOVIE / DRAMA 텍스트 */
+        .star-text {
+            font-family: var(--main-font);
+            font-size: 3rem; /* 텍스트 크기 */
+            color: #d8c763; /* 금색 글씨 느낌 */
+            position: absolute;
+            user-select: none;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 입체감 */
+        }
+
+        .star-text.movie {
+            top: 50%; left: 18%; /* 왼쪽 세로 배치 */
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .star-text.drama {
+            top: 50%; right: 18%; /* 오른쪽 세로 배치 */
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        /* 🍔 햄버거 카드 (클릭 시 나타남) */
+        .burger-card {
+            position: absolute;
+            width: 280px; height: 280px;
+            background: #fff; border: 2px solid #000;
+            display: flex; justify-content: center; align-items: center;
+            font-family: var(--main-font); font-size: 5rem;
+            z-index: 100; opacity: 0;
+            transform: scale(0.5); /* 시작 크기 (작게) */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none; /* 클릭 방지 */
+        }
+
+        .walk-of-fame-star:hover .burger-card {
+            transform: scale(1); opacity: 1; /* 호버 시 나타남 */
+        }
+
+        /* 🌹 중앙 장미 (유광 타일 위 드라이하게 배치) */
+        .center-content-area {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-family: var(--sub-font);
+            z-index: 50;
+        }
+        
+        .flower-tag {
+            background: #fff; padding: 15px 30px;
+            border: 1px solid #000;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="star-grid-container">
+        <div class="grid-section" style="grid-area: 1 / 1;">
+            <div class="walk-of-fame-star" onclick="location.href='movie.html'">
+                <div class="star-center-plate"></div>
+                <span class="star-text movie">MOVIE</span>
+                <span class="star-text drama">DRAMA</span>
+                <div class="burger-card">🍔</div>
+            </div>
+        </div>
+        
+        <div class="center-content-area">
+            <div style="font-size: 60px; filter: drop-shadow(0 0 10px rgba(255,0,0,0.5));">🌹</div>
+            <div class="flower-tag">THE SUBSTANCE (2024)</div>
+        </div>
+
+        <div class="grid-section" style="grid-area: 2 / 2;">
+            <div class="walk-of-fame-star" onclick="location.href='drama.html'">
+                <div class="star-center-plate"></div>
+                <span class="star-text movie">MOVIE</span>
+                <span class="star-text drama">DRAMA</span>
+                <div class="burger-card">🍔</div>
+            </div>
         </div>
     </div>
 
-    <div class="section" style="grid-area: 2 / 2;">
-        <div class="walk-star" onclick="location.href='drama.html'">
-            <div class="burger-card">DRAMA</div>
-        </div>
-    </div>
-</div>
+</body>
+</html>
