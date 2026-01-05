@@ -1,66 +1,85 @@
-<style>
-    :root {
-        --main-font: 'Bebas Neue';
-        --hover-color: #01dd01;
-        --tile-size: 120px; /* 타일 크기 키움 */
-    }
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Still YES.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-font: 'Bebas Neue', cursive;
+            --tile-size: 150px; /* 더 큼직한 타일 */
+        }
 
-    body {
-        background-color: #fff;
-        /* 욕실 타일 느낌 극대화 */
-        background-image: 
-            linear-gradient(to right, #e0e0e0 2px, transparent 2px),
-            linear-gradient(to bottom, #e0e0e0 2px, transparent 2px);
-        background-size: var(--tile-size) var(--tile-size);
-        display: flex; justify-content: center; align-items: center;
-        height: 100vh; margin: 0; overflow: hidden;
-    }
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: #fcfcfc;
+            /* 🛀 타일 줄눈에 입체감(그림자) 추가 */
+            background-image: 
+                linear-gradient(to right, #ddd 1px, transparent 1px),
+                linear-gradient(to bottom, #ddd 1px, transparent 1px);
+            background-size: var(--tile-size) var(--tile-size);
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
 
-    .still-yes {
-        font-family: var(--main-font);
-        font-size: 22vw;
-        letter-spacing: -5px;
-        cursor: pointer;
-        display: flex; gap: 3vw;
-        position: relative;
-    }
+        .container {
+            display: flex;
+            align-items: baseline; /* 글자 아래 기준선 맞춤 */
+            gap: 20px;
+            position: relative;
+        }
 
-    .yes-text { transition: color 0.2s; }
-    .yes-text:hover { color: var(--hover-color); }
+        .text {
+            font-family: var(--main-font);
+            font-size: 25vw; /* 압도적 크기 */
+            line-height: 0.85; /* 잘림 방지용 핵심 수치! */
+            color: #000;
+            margin: 0;
+            letter-spacing: -5px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
 
-    /* 💳 503 카드 (실물 사이즈 느낌) */
-    .id-card {
-        position: absolute;
-        width: 250px; height: 150px;
-        background: #fff;
-        border: 1px solid #ccc;
-        box-shadow: 20px 20px 40px rgba(0,0,0,0.2);
-        display: flex; justify-content: center; align-items: center;
-        font-family: var(--main-font);
-        font-size: 80px; /* 카드에 꽉 차는 503 */
-        top: 50%; left: 150%; /* 화면 밖 대기 */
-        transform: translate(-50%, -50%) rotate(15deg);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        z-index: 100;
-        pointer-events: none;
-    }
+        /* 🟢 HOVER 시 색상만 변화 */
+        .yes-text:hover { color: #01dd01; }
 
-    /* 클릭(인식) 시 애니메이션 */
-    .id-card.active {
-        left: 80%; /* YES 글자 근처로 착! */
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-</style>
+        /* 💳 503 카드 (실물 비율 85.6mm : 53.9mm 재현) */
+        .id-card {
+            position: absolute;
+            width: 320px; height: 200px;
+            background: #fff;
+            border: 1px solid #000;
+            box-shadow: 30px 30px 60px rgba(0,0,0,0.15);
+            display: flex; justify-content: center; align-items: center;
+            font-family: var(--main-font);
+            font-size: 120px; /* 503 꽉 차게 */
+            top: 50%; left: 180%; /* 화면 밖 */
+            transform: translate(-50%, -50%) rotate(10deg);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 100;
+        }
 
-<div class="still-yes" onclick="tagCard()">
-    <span>STILL</span>
-    <span class="yes-text">YES.</span>
-    <div id="card" class="id-card">503</div>
-</div>
+        /* 🖱️ 클릭 시 카드 인식 애니메이션 */
+        .id-card.active {
+            left: 75%;
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+    </style>
+</head>
+<body>
 
-<script>
-    function tagCard() {
-        document.getElementById('card').classList.add('active');
-        setTimeout(() => { location.href = 'main.html'; }, 600);
-    }
-</script>
+    <div class="container" onclick="tagCard()">
+        <h1 class="text">STILL</h1>
+        <h1 class="text yes-text">YES.</h1>
+        <div id="card" class="id-card">503</div>
+    </div>
+
+    <script>
+        function tagCard() {
+            document.getElementById('card').classList.add('active');
+            setTimeout(() => { location.href = 'main.html'; }, 700);
+        }
+    </script>
+</body>
+</html>
