@@ -50,10 +50,11 @@
             width: 320px; height: 200px;
             background: #fff;
             border: 1px solid #000;
+            border-radius: 12px;
             box-shadow: 30px 30px 60px rgba(0,0,0,0.15);
             display: flex; justify-content: center; align-items: center;
             font-family: var(--main-font);
-            font-size: 120px; /* 503 꽉 차게 */
+            font-size: 150px; /* 503 꽉 차게 */
             top: 50%; left: 180%; /* 화면 밖 */
             transform: translate(-50%, -50%) rotate(10deg);
             transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
@@ -74,12 +75,28 @@
         <h1 class="text yes-text">YES.</h1>
         <div id="card" class="id-card">503</div>
     </div>
-
     <script>
-        function tagCard() {
-            document.getElementById('card').classList.add('active');
-            setTimeout(() => { location.href = 'main.html'; }, 700);
+    // 1. [핵심] 뒤로 가기나 앞으로 가기로 페이지가 다시 나타날 때 실행
+    window.onpageshow = function(event) {
+        // event.persisted는 페이지가 캐시된 상태로 로드되었는지 확인해줘
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            // 카드의 'active' 클래스를 강제로 제거해서 원래 위치(오른쪽 밖)로 돌려보냄
+            document.getElementById('card').classList.remove('active');
         }
-    </script>
+    };
+
+    // 2. 카드를 클릭(태그)했을 때 실행되는 함수
+    function tagCard() {
+        const card = document.getElementById('card');
+        
+        // 카드를 화면 안으로 불러오기
+        card.classList.add('active');
+        
+        // 0.65초 뒤에 메인 페이지로 이동 (애니메이션이 끝날 때쯤!)
+        setTimeout(() => {
+            location.href = 'main.html';
+        }, 650);
+    }
+</script>
 </body>
 </html>
