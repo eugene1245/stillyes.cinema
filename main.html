@@ -2,169 +2,173 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eugene's Archive</title>
+    <title>Walk of Fame</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --main-font: 'Bebas Neue', cursive;
             --sub-font: 'JetBrains Mono', monospace;
-            --star-color-base: #ffb6c1; /* 연한 핑크, 이미지 참고 */
-            --star-color-light: #fcd9df; /* 텍스처 베이스 */
-            --star-border-gold: #daa520; /* 금색 테두리 */
-            --bg-dark: #1a1a1a; /* 검은색 아스팔트 배경 */
-            --dot-color: rgba(255, 255, 255, 0.15); /* 흰색 도트 */
+            --star-pink: #e58e8e; /* Substance 특유의 퇴색된 핑크 */
+            --gold: #d4af37; /* 금장 테두리 */
         }
 
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
-            background-color: var(--bg-dark);
-            /* 🌌 검은색 아스팔트 + 흰색 도트 배경 */
-            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
-            background-size: 8px 8px; /* 도트 간격 */
-            font-family: var(--main-font);
+            background-color: #0a0a0a;
+            /* 🌌 1. 불규칙한 아스팔트 배경: 여러 그래디언트를 겹쳐서 도트 느낌 제거 */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 2px, transparent 2px);
+            background-size: 150px 150px, 200px 200px, 100px 100px;
+            display: flex; justify-content: center; align-items: center;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        .star-grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+        .grid-layout {
+            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
             width: 100vw; height: 100vh;
-            position: relative;
         }
 
-        .grid-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        .section { display: flex; justify-content: center; align-items: center; }
 
-        /* ⭐ 명예의 거리 별 스타일 */
-        .walk-of-fame-star {
-            width: 350px; height: 350px; /* 크기 키움 */
-            background-color: var(--star-color-base);
-            /* 이미지의 불규칙한 텍스처 표현 (노이즈 필터) */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="2" height="2" x="0" y="0" fill="%23fff" opacity=".1"/><rect width="2" height="2" x="2" y="2" fill="%23fff" opacity=".1"/></svg>');
-            background-size: 20px 20px; /* 텍스처 크기 조절 */
-
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            border: 8px solid var(--star-border-gold); /* 금색 테두리 */
-            box-shadow: 0 0 20px rgba(0,0,0,0.5); /* 그림자로 입체감 */
+        /* ⭐ 2. 별 디자인 수정 */
+        .walk-star {
+            width: 450px; height: 450px; /* 더 크게 수정 */
+            background-color: var(--star-pink);
+            /* 금색 테두리: 별 모양을 그대로 따라가는 테두리는 사실 CSS border로는 불가능해. 
+               그래서 별 모양(clip-path)을 입힌 가짜 테두리 레이어를 아래에 깔아야 해. */
             position: relative;
             cursor: pointer;
-            transition: transform 0.2s ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
+            /* 꼭짓점 각도 조절: polygon 수치를 조절해서 덜 파이게 수정 */
+            clip-path: polygon(50% 0%, 63% 38%, 100% 38%, 69% 59%, 82% 100%, 50% 75%, 18% 100%, 31% 59%, 0% 38%, 37% 38%);
+            transition: transform 0.3s;
         }
 
-        .walk-of-fame-star:hover {
-            transform: scale(1.03); /* 살짝 커지며 반응 */
-        }
-
-        /* 별 중앙의 아이콘/명패 */
-        .star-center-plate {
-            width: 80px; height: 80px;
-            background: #bdb76b; /* 금색 메탈 느낌 */
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.3);
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+        /* 별의 금장 테두리 구현 (인라인 필터 활용) */
+        .star-border {
+            width: 465px; height: 465px; /* 본체보다 살짝 크게 */
+            background: var(--gold);
             display: flex; justify-content: center; align-items: center;
-        }
-
-        /* 중앙 명패 안의 작은 디테일 (이미지 레퍼런스 참고) */
-        .star-center-plate::after {
-            content: '';
-            width: 20px; height: 20px;
-            border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.3);
-            background: rgba(0,0,0,0.1);
-        }
-
-        /* ⭐ MOVIE / DRAMA 텍스트 */
-        .star-text {
-            font-family: var(--main-font);
-            font-size: 3rem; /* 텍스트 크기 */
-            color: #d8c763; /* 금색 글씨 느낌 */
+            clip-path: polygon(50% 0%, 63% 38%, 100% 38%, 69% 59%, 82% 100%, 50% 75%, 18% 100%, 31% 59%, 0% 38%, 37% 38%);
             position: absolute;
-            user-select: none;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 입체감 */
         }
 
-        .star-text.movie {
-            top: 50%; left: 18%; /* 왼쪽 세로 배치 */
-            transform: translateY(-50%) rotate(-90deg);
+        /* 별 안의 텍스트와 아이콘 배치 */
+        .star-content {
+            display: flex; flex-direction: column; align-items: center;
+            font-family: var(--main-font); color: rgba(0,0,0,0.7);
         }
 
-        .star-text.drama {
-            top: 50%; right: 18%; /* 오른쪽 세로 배치 */
-            transform: translateY(-50%) rotate(90deg);
-        }
+        .star-text { font-size: 3.5rem; letter-spacing: 2px; }
+        .star-icon { font-size: 4rem; margin-top: 10px; }
 
-        /* 🍔 햄버거 카드 (클릭 시 나타남) */
-        .burger-card {
-            position: absolute;
-            width: 280px; height: 280px;
-            background: #fff; border: 2px solid #000;
-            display: flex; justify-content: center; align-items: center;
-            font-family: var(--main-font); font-size: 5rem;
-            z-index: 100; opacity: 0;
-            transform: scale(0.5); /* 시작 크기 (작게) */
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none; /* 클릭 방지 */
-        }
-
-        .walk-of-fame-star:hover .burger-card {
-            transform: scale(1); opacity: 1; /* 호버 시 나타남 */
-        }
-
-        /* 🌹 중앙 장미 (유광 타일 위 드라이하게 배치) */
-        .center-content-area {
+        /* 🎲 4. 중앙 랜덤 메시지 카드 */
+        .random-center {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
-            font-family: var(--sub-font);
-            z-index: 50;
+            z-index: 100; text-align: center;
         }
-        
-        .flower-tag {
-            background: #fff; padding: 15px 30px;
-            border: 1px solid #000;
-            font-size: 1.2rem;
+
+        .dice-icon {
+            font-size: 50px; cursor: pointer; transition: 0.3s;
+            filter: grayscale(1) invert(1);
+        }
+        .dice-icon:hover { transform: rotate(90deg) scale(1.1); }
+
+        .message-card {
+            background: #fff; border: 1px solid #000;
+            padding: 15px 25px; margin-top: 15px;
+            font-family: var(--sub-font); font-size: 0.9rem;
+            box-shadow: 10px 10px 0px rgba(255,255,255,0.1);
         }
     </style>
 </head>
 <body>
 
-    <div class="star-grid-container">
-        <div class="grid-section" style="grid-area: 1 / 1;">
-            <div class="walk-of-fame-star" onclick="location.href='movie.html'">
-                <div class="star-center-plate"></div>
-                <span class="star-text movie">MOVIE</span>
-                <span class="star-text drama">DRAMA</span>
-                <div class="burger-card">🍔</div>
-            </div>
-        </div>
-        
-        <div class="center-content-area">
-            <div style="font-size: 60px; filter: drop-shadow(0 0 10px rgba(255,0,0,0.5));">🌹</div>
-            <div class="flower-tag">THE SUBSTANCE (2024)</div>
-        </div>
-
-        <div class="grid-section" style="grid-area: 2 / 2;">
-            <div class="walk-of-fame-star" onclick="location.href='drama.html'">
-                <div class="star-center-plate"></div>
-                <span class="star-text movie">MOVIE</span>
-                <span class="star-text drama">DRAMA</span>
-                <div class="burger-card">🍔</div>
+<div class="grid-layout">
+    <div class="section" style="grid-area: 1 / 1;">
+        <div class="star-border">
+            <div class="walk-star" onclick="location.href='movie.html'">
+                <div class="star-content" style="margin-top: 130px;">
+                    <div class="star-text">MOVIE</div>
+                    <div class="star-icon">🎬</div>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="random-center">
+        <div class="dice-icon" onclick="shuffleMovie()">🎲</div>
+        <div class="message-card" id="movie-msg">THE SUBSTANCE (2024)</div>
+    </div>
+
+    <div class="section" style="grid-area: 2 / 2;">
+        <div class="star-border">
+            <div class="walk-star" onclick="location.href='drama.html'">
+                <div class="star-content" style="margin-top: 130px;">
+                    <div class="star-text">DRAMA</div>
+                    <div class="star-icon">📺</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 유진이가 고른 랜덤 작품 리스트
+    const movies = [
+        "서브스턴스 (2025)",
+        "불한당: 나쁜 놈들의 세상 (2017)",
+        "혐오스런 마츠코의 일생 (2006)",
+        "탈주 (2024)",
+        "기생충 (2019)",
+        "독전 (2018)",
+        "발레리나 (2023)",
+        "돈 (2019)",
+        "킹스맨: 시크릿 에이전트 (2014)",
+        "킹스맨: 골든 서클 (2017)",
+        "베놈 (2018)",
+        "오펜하이머 (2023)",
+        "빌어먹을 세상 따위 (2019)",
+        "마이 네임 (2021)",
+        "인간수업 (2020)",
+        "더 글로리 (2022)",
+        "약한영웅 (2025)",
+        "더 에이트 쇼 (2024)",
+        "그녀의 이름은 난노 (2021)",
+        "살인자ㅇ난감 (2024)",
+        "너에게는 닿지 않아 (2023)"
+    ];
+
+    function shuffleMovie() {
+        const target = document.getElementById('movie-msg');
+        
+        // 랜덤 인덱스 생성
+        const randomIndex = Math.floor(Math.random() * movies.length);
+        
+        // 텍스트 변경
+        target.innerText = movies[randomIndex];
+        
+        // 유진아, 이건 보너스! 누를 때마다 카드가 살짝 흔들리는 효과(애니메이션)도 줄 수 있어.
+        target.style.animation = 'none';
+        target.offsetHeight; // 강제 리플로우 (애니메이션 재시작용)
+        target.style.animation = 'pop 0.3s ease';
+    }
+
+    // 페이지 로드 시 처음에도 랜덤으로 하나 보여주기
+    window.onload = shuffleMovie;
+</script>
+
+<style>
+    /* 카드가 뜰 때 톡 튀어나오는 느낌을 주는 애니메이션 */
+    @keyframes pop {
+        0% { transform: scale(0.95); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>
 
 </body>
 </html>
