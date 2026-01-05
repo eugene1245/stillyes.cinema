@@ -4,73 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Still yes.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff; /* 순백색 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Roboto Mono', monospace;
+            background-color: #ffffff;
+            font-family: 'Edu VIC WA NT Beginner', cursive; /* 유진이의 원픽 서체 스타일 */
             overflow: hidden;
         }
 
-        .container {
-            text-align: center;
-            cursor: pointer;
+        /* 좌상단 질문: 날 서 보이지만 투명도로 힘을 뺀 느낌 */
+        .question {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-size: 1.2rem;
+            color: rgba(0, 0, 0, 0.75); /* 투명도 7-80% */
+            letter-spacing: -0.5px;
+            font-weight: 400;
         }
 
-        .title {
-            font-size: 5rem; /* 아주 크게! */
-            font-weight: 500;
-            letter-spacing: -2px; /* 자간을 좁혀서 날카로운 느낌 */
+        /* 정중앙 대답: 압도적인 크기 */
+        .answer-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .main-text {
+            font-size: 15vw; /* 화면 너비에 비례해서 엄청나게 커짐! */
             color: #000;
-            transition: all 0.5s ease;
-            position: relative;
+            line-height: 0.8;
+            letter-spacing: -5px;
         }
 
-        /* 마우스를 올렸을 때 마치 에러가 난 것처럼 살짝 흔들리는 효과(유진 스타일) */
-        .title:hover {
-            font-style: italic;
-            color: #ff3e00; /* 유진이의 포인트 컬러: 강렬한 레드-오렌지 */
-        }
-
-        .sub-text {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #999;
-            text-transform: uppercase;
-        }
-
-        /* 입장을 위한 '영수증 라벨' 스타일 버튼 */
-        .enter-btn {
-            margin-top: 40px;
-            padding: 5px 10px;
-            border: 1px solid #000;
-            background: none;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.7rem;
+        /* 클릭 가능한 'YES' 부분만 따로 설정 */
+        .clickable-yes {
             cursor: pointer;
-            transition: 0.3s;
+            position: relative;
+            transition: all 0.2s ease;
         }
 
-        .enter-btn:hover {
-            background-color: #000;
-            color: #fff;
+        /* 마우스를 올렸을 때만 아주 살짝 번지는 듯한 효과 (날 선 느낌 유지) */
+        .clickable-yes:hover {
+            color: #000;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        /* 모바일 대응 */
+        @media (max-width: 768px) {
+            .main-text { font-size: 25vw; }
+            .question { top: 20px; left: 20px; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" onclick="location.href='main.html'">
-        <div class="title">Still yes.</div>
-        <div class="sub-text">Are you still watching this? — (YES)</div>
-        <button class="enter-btn">CLICK TO ENTER THE ARCHIVE</button>
+    <div class="question">YOU ARE STILL WATCHING THIS?</div>
+
+    <div class="answer-container">
+        <h1 class="main-text">
+            Still <span class="clickable-yes" onclick="enterArchive()">YES.</span>
+        </h1>
     </div>
+
+    <script>
+        function enterArchive() {
+            // 클릭 시 다음 페이지로 이동 (나중에 main.html 만들면 거기로 감!)
+            location.href = 'main.html';
+        }
+    </script>
 
 </body>
 </html>
