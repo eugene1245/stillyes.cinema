@@ -1,137 +1,66 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Still yes.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --main-font: 'Bebas Neue', cursive;
-            --sub-font: 'JetBrains Mono', monospace;
-            --hover-color: #01dd01; /* 유진이의 쨍한 그린 포인트 */
-            --bg-color-tile: #fefefe;
-        }
+<style>
+    :root {
+        --main-font: 'Bebas Neue';
+        --hover-color: #01dd01;
+        --tile-size: 120px; /* 타일 크기 키움 */
+    }
 
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background-color: var(--bg-color-tile);
-            /* 🛀 흰색 유광 타일 배경 (격자 강조) */
-            background-image: 
-                linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-            background-size: 80px 80px;
-            font-family: var(--main-font);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    body {
+        background-color: #fff;
+        /* 욕실 타일 느낌 극대화 */
+        background-image: 
+            linear-gradient(to right, #e0e0e0 2px, transparent 2px),
+            linear-gradient(to bottom, #e0e0e0 2px, transparent 2px);
+        background-size: var(--tile-size) var(--tile-size);
+        display: flex; justify-content: center; align-items: center;
+        height: 100vh; margin: 0; overflow: hidden;
+    }
 
-        /* ❓ 'STILL?' 인트로 섹션 */
-        .intro-overlay {
-            position: absolute;
-            width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            background-color: var(--bg-color-tile);
-            z-index: 100;
-            /* 1-2초 유지 후 슥 지나가며 사라짐 */
-            animation: slideOut 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards 2s;
-        }
+    .still-yes {
+        font-family: var(--main-font);
+        font-size: 22vw;
+        letter-spacing: -5px;
+        cursor: pointer;
+        display: flex; gap: 3vw;
+        position: relative;
+    }
 
-        .still-question {
-            font-size: 18vw;
-            color: #000;
-            letter-spacing: -5px;
-        }
+    .yes-text { transition: color 0.2s; }
+    .yes-text:hover { color: var(--hover-color); }
 
-        /* 📽️ 'YES.' 메인 콘텐츠 */
-        .main-content {
-            position: relative;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            gap: 2vw;
-        }
+    /* 💳 503 카드 (실물 사이즈 느낌) */
+    .id-card {
+        position: absolute;
+        width: 250px; height: 150px;
+        background: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 20px 20px 40px rgba(0,0,0,0.2);
+        display: flex; justify-content: center; align-items: center;
+        font-family: var(--main-font);
+        font-size: 80px; /* 카드에 꽉 차는 503 */
+        top: 50%; left: 150%; /* 화면 밖 대기 */
+        transform: translate(-50%, -50%) rotate(15deg);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 100;
+        pointer-events: none;
+    }
 
-        .still-word {
-            font-size: 20vw;
-            line-height: 0.8;
-            letter-spacing: -5px;
-            color: #000;
-            user-select: none;
-        }
+    /* 클릭(인식) 시 애니메이션 */
+    .id-card.active {
+        left: 80%; /* YES 글자 근처로 착! */
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+</style>
 
-        .yes-word {
-            font-size: 20vw;
-            line-height: 0.8;
-            letter-spacing: -5px;
-            color: #000;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.2s ease;
-        }
+<div class="still-yes" onclick="tagCard()">
+    <span>STILL</span>
+    <span class="yes-text">YES.</span>
+    <div id="card" class="id-card">503</div>
+</div>
 
-        /* HOVER 시 색상 변화 */
-        .yes-word:hover {
-            color: var(--hover-color);
-        }
-
-        /* 📦 503 화이트 카드 */
-        .card-503 {
-            position: absolute;
-            top: 50%;
-            right: -180px; /* 초기 위치 */
-            transform: translateY(-50%);
-            width: 140px;
-            height: 90px;
-            background: #fff;
-            border: 1px solid #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: var(--sub-font);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            pointer-events: none;
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
-        }
-
-        .yes-word:hover .card-503 {
-            right: -200px; /* 호버 시 슬라이드 인 */
-            opacity: 1;
-        }
-
-        .card-503 .num { font-size: 2.2rem; font-weight: bold; line-height: 1; }
-        .card-503 .msg { font-size: 0.6rem; margin-top: 5px; letter-spacing: 1px; }
-
-        /* 애니메이션 */
-        @keyframes slideOut {
-            from { transform: translateX(0); }
-            to { transform: translateX(100%); visibility: hidden; }
-        }
-
-    </style>
-</head>
-<body>
-
-    <div class="intro-overlay">
-        <h1 class="still-question">STILL?</h1>
-    </div>
-
-    <div class="main-content">
-        <span class="still-word">STILL</span>
-        <span class="yes-word" onclick="location.href='main.html'">
-            YES.
-            <div class="card-503">
-                <span class="num">503</span>
-                <span class="msg">SERVICE UNAVAILABLE</span>
-            </div>
-        </span>
-    </div>
-
-</body>
-</html>
+<script>
+    function tagCard() {
+        document.getElementById('card').classList.add('active');
+        setTimeout(() => { location.href = 'main.html'; }, 600);
+    }
+</script>
