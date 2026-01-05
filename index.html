@@ -8,131 +8,130 @@
     
     <style>
         :root {
-            --bg-color: #f2f2f2;
             --main-font: 'Bebas Neue', cursive;
             --sub-font: 'JetBrains Mono', monospace;
+            --hover-color: #01dd01; /* 유진이의 쨍한 그린 포인트 */
+            --bg-color-tile: #fefefe;
         }
 
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
-            background-color: var(--bg-color);
+            background-color: var(--bg-color-tile);
+            /* 🛀 흰색 유광 타일 배경 (격자 강조) */
+            background-image: 
+                linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 80px 80px;
+            font-family: var(--main-font);
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* 🖼️ 디자인 밀도를 높여주는 배경 레이어 */
-        .grid-background {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px);
-            background-size: 30px 30px;
-            z-index: 1;
-        }
-
-        .frame-line {
-            position: fixed;
-            top: 40px; left: 40px; right: 40px; bottom: 40px;
-            border: 1px solid rgba(0,0,0,0.05);
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        /* ❓ 좌상단 질문: 무심하게 툭 */
-        .question {
+        /* ❓ 'STILL?' 인트로 섹션 */
+        .intro-overlay {
             position: absolute;
-            top: 60px; left: 60px;
-            font-family: var(--sub-font);
-            font-size: 1rem;
-            color: rgba(0, 0, 0, 0.7);
-            z-index: 10;
-            letter-spacing: 1px;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background-color: var(--bg-color-tile);
+            z-index: 100;
+            /* 1-2초 유지 후 슥 지나가며 사라짐 */
+            animation: slideOut 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards 2s;
         }
 
-        /* 📽️ 메인 텍스트: 한 줄로 꽉 차게 */
-        .main-container {
+        .still-question {
+            font-size: 18vw;
+            color: #000;
+            letter-spacing: -5px;
+        }
+
+        /* 📽️ 'YES.' 메인 콘텐츠 */
+        .main-content {
             position: relative;
-            z-index: 10;
-            text-align: center;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 2vw;
         }
 
-        .still-yes-text {
-            font-family: var(--main-font);
-            font-size: 22vw; /* 화면에 꽉 차는 한 줄 */
+        .still-word {
+            font-size: 20vw;
             line-height: 0.8;
             letter-spacing: -5px;
             color: #000;
-            margin: 0;
-            display: flex;
-            gap: 2vw; /* Still과 YES 사이 간격 */
-        }
-
-        .clickable-yes {
-            cursor: pointer;
-            position: relative;
             user-select: none;
         }
 
-        /* 💥 펀치 효과 레이어 */
-        .punch-hole {
-            position: fixed;
-            top: 50%; left: 50%;
-            width: 0; height: 0;
-            background: #000;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 100;
+        .yes-word {
+            font-size: 20vw;
+            line-height: 0.8;
+            letter-spacing: -5px;
+            color: #000;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        /* HOVER 시 색상 변화 */
+        .yes-word:hover {
+            color: var(--hover-color);
+        }
+
+        /* 📦 503 화이트 카드 */
+        .card-503 {
+            position: absolute;
+            top: 50%;
+            right: -180px; /* 초기 위치 */
+            transform: translateY(-50%);
+            width: 140px;
+            height: 90px;
+            background: #fff;
+            border: 1px solid #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--sub-font);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             pointer-events: none;
-            transition: width 0.7s cubic-bezier(0.8, 0, 0.2, 1), height 0.7s cubic-bezier(0.8, 0, 0.2, 1);
-            display: flex; justify-content: center; align-items: center;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
         }
 
-        .punch-icon {
-            width: 80px; height: 80px;
-            fill: #fff; opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        /* 클릭 시 상태 변화 */
-        .is-punched .punch-hole {
-            width: 350vw; height: 350vw;
-        }
-        .is-punched .punch-icon {
+        .yes-word:hover .card-503 {
+            right: -200px; /* 호버 시 슬라이드 인 */
             opacity: 1;
+        }
+
+        .card-503 .num { font-size: 2.2rem; font-weight: bold; line-height: 1; }
+        .card-503 .msg { font-size: 0.6rem; margin-top: 5px; letter-spacing: 1px; }
+
+        /* 애니메이션 */
+        @keyframes slideOut {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); visibility: hidden; }
         }
 
     </style>
 </head>
-<body id="main-body">
+<body>
 
-    <div class="grid-background"></div>
-    <div class="frame-line"></div>
-
-    <div class="question">STILL WATCHING THIS?</div>
-
-    <div class="main-container">
-        <h1 class="still-yes-text">
-            <span>STILL</span> 
-            <span class="clickable-yes" onclick="handlePunch()">YES.</span>
-        </h1>
+    <div class="intro-overlay">
+        <h1 class="still-question">STILL?</h1>
     </div>
 
-    <div id="punch" class="punch-hole">
-        <svg class="punch-icon" viewBox="0 0 24 24">
-            <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4h-2l2 4h-3l-2-4h-3v14h18v-14h-3z"/>
-        </svg>
+    <div class="main-content">
+        <span class="still-word">STILL</span>
+        <span class="yes-word" onclick="location.href='main.html'">
+            YES.
+            <div class="card-503">
+                <span class="num">503</span>
+                <span class="msg">SERVICE UNAVAILABLE</span>
+            </div>
+        </span>
     </div>
-
-    <script>
-        function handlePunch() {
-            document.getElementById('main-body').classList.add('is-punched');
-            setTimeout(() => {
-                location.href = 'main.html';
-            }, 900);
-        }
-    </script>
 
 </body>
 </html>
