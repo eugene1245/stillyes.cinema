@@ -4,115 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Still yes.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Dots:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Edu+AU+VIC+WA+NT+Dots:wght@400..700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #f7f7f7; /* 완전 흰색보다 약간 미색 섞인 게 더 감각적이야 */
+            /* 🍅 유진의 포인트 컬러: 여기서 한 번에 수정 가능! */
+            --point-color: #ff3e00; 
+            --bg-color: #f0f0f0;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             background-color: var(--bg-color);
-            font-family: "Edu AU VIC WA NT Dots", cursive;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* 배경 노이즈 질감 (유진 스타일!) */
+        /* 배경 미세 격자 (종이 질감 대용) */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); /* 미세한 노이즈 텍스처 */
-            opacity: 0.05;
+            background-image: linear-gradient(#e0e0e0 1px, transparent 1px), linear-gradient(90deg, #e0e0e0 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.2;
             pointer-events: none;
         }
 
-        /* 1단계: 질문 섹션 */
-        .intro-overlay {
+        /* 🎟️ 1단계: 티켓 인트로 (질문이 담긴 박스) */
+        .ticket-intro {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--bg-color);
-            z-index: 10;
-            animation: fadeOut 1.5s forwards 2s; /* 2초 뒤에 1.5초 동안 사라짐 */
-        }
-
-        .question-text {
-            font-size: 2rem;
-            color: rgba(0, 0, 0, 0.6);
-            letter-spacing: 2px;
-            animation: textFocus 1.5s ease-out;
-        }
-
-        /* 2단계: 메인 콘텐츠 */
-        .main-content {
+            width: 320px;
+            height: 140px;
+            background: #000;
+            color: #fff;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            padding: 0 30px;
+            z-index: 100;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 20px 20px 0px rgba(0,0,0,0.05);
+            /* 왼쪽에서 오른쪽으로 슥- 지나가며 사라지는 연출 */
+            animation: ticketSlide 2.8s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+        }
+
+        .ticket-intro span { font-size: 0.6rem; opacity: 0.4; margin-bottom: 10px; }
+        .ticket-intro h2 { font-size: 1.1rem; margin: 0; letter-spacing: 1px; font-weight: 300; }
+
+        /* 📽️ 2단계: 메인 콘텐츠 (Still YES) */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             opacity: 0;
-            animation: fadeIn 1s forwards 3.5s; /* 질문이 사라진 뒤 나타남 */
+            animation: contentFadeIn 1s forwards 2.5s;
         }
 
-        /* 영화 슬레이트 아이콘 (심플한 SVG) */
-        .cinema-icon {
-            width: 60px;
-            height: 60px;
-            margin-bottom: -20px;
-            opacity: 0.8;
-            fill: #000;
-        }
-
-        .main-text {
-            font-size: 16vw;
+        /* Still: 묵직하고 거대함 (The Substance 느낌) */
+        .still-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 28vw; /* 압도적 크기 */
+            line-height: 0.75;
             color: #000;
-            letter-spacing: -6px;
             margin: 0;
-            user-select: none;
+            letter-spacing: -2px;
         }
 
-        .clickable-yes {
+        /* YES: 작고 날카로운 점선 (150% 이상 차이) */
+        .yes-text {
+            font-family: 'Edu AU VIC WA NT Dots', cursive;
+            font-size: 8vw; 
+            color: #000;
             cursor: pointer;
-            transition: all 0.3s;
+            margin-top: 10px;
+            margin-left: 10px; /* 약간 어긋난 배치 */
+            transition: 0.3s;
         }
 
-        .clickable-yes:hover {
-            color: #ff3e00; /* 유진이의 그 토마토 레드 포인트! */
-            font-style: italic;
+        .yes-text:hover {
+            color: var(--point-color);
         }
 
-        /* 애니메이션 정의 */
-        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes textFocus { from { filter: blur(10px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
+        /* 하단 데이터 라벨 (슬레이트 아이콘 포함) */
+        .footer-label {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: rgba(0,0,0,0.3);
+        }
 
+        .icon-slate { width: 18px; height: 18px; fill: currentColor; }
+
+        /* 애니메이션 키프레임 */
+        @keyframes ticketSlide {
+            0% { transform: translateX(-150%) skewX(-10deg); opacity: 0; }
+            30% { transform: translateX(0) skewX(0deg); opacity: 1; }
+            70% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(250%) skewX(10deg); opacity: 0; }
+        }
+
+        @keyframes contentFadeIn {
+            from { opacity: 0; filter: blur(20px); transform: scale(0.95); }
+            to { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="intro-overlay">
-        <div class="question-text">YOU ARE STILL WATCHING THIS?</div>
+    <div class="ticket-intro">
+        <span>[ ARCHIVE ACCESS REQUEST ]</span>
+        <h2>YOU ARE STILL WATCHING THIS?</h2>
+        <div style="border-bottom: 1px dashed rgba(255,255,255,0.3); width: 100%; margin-top: 15px;"></div>
     </div>
 
-    <div class="main-content">
-        <svg class="cinema-icon" viewBox="0 0 24 24">
+    <div class="main-container">
+        <h1 class="still-text">STILL</h1>
+        <span class="yes-text" onclick="location.href='main.html'">YES.</span>
+    </div>
+
+    <div class="footer-label">
+        <svg class="icon-slate" viewBox="0 0 24 24">
             <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4h-2l2 4h-3l-2-4h-3v14h18v-14h-3z"/>
         </svg>
-        <h1 class="main-text">
-            Still <span class="clickable-yes" onclick="location.href='main.html'">YES.</span>
-        </h1>
+        <span>EUGENE_PRIVATE_ARCHIVE_VER_0.1</span>
     </div>
 
 </body>
