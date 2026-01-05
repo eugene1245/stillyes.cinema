@@ -6,7 +6,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 유진이가 요청한 쌩화이트에 가까운 배경색 */
             --bg-white: rgba(254, 254, 254, 1);
             --korean-font: 'Noto Sans KR', sans-serif;
         }
@@ -15,41 +14,44 @@
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             background-color: var(--bg-white);
-            display: flex; justify-content: center; align-items: center;
             overflow: hidden;
+            font-family: 'Bebas Neue', cursive;
         }
 
-        /* 4등분 그리드 */
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            width: 100vw; height: 100vh;
+        /* 📏 세로로 2등분 (좌, 우) */
+        .split-container {
+            display: flex; /* flex로 바꾸면 좌우 정렬이 더 직관적이야 */
+            width: 100vw;
+            height: 100vh;
             position: relative;
         }
 
-        .cell { display: flex; justify-content: center; align-items: center; }
+        /* 왼쪽과 오른쪽 영역 공통 스타일 */
+        .pane {
+            flex: 1; /* 화면을 정확히 1:1로 나눠 가짐 */
+            display: flex;
+            justify-content: center; /* 가로 정중앙 */
+            align-items: center;     /* 세로 정중앙 */
+        }
 
-        /* 🖼️ 이미지 아이콘 (그림자 없음, 데칼코마니 배치) */
+        /* 🖼️ 이미지 아이콘 (그림자 없음) */
         .icon-btn {
-            width: 320px; /* 이미지 크기에 따라 조절 */
+            width: 380px; /* 2등분이니까 크기를 조금 더 키워도 시원해 보여 */
             cursor: pointer;
             transition: transform 0.3s ease;
         }
 
         .icon-btn:hover {
-            transform: scale(1.03);
+            transform: scale(1.05);
         }
 
         .icon-btn img {
             width: 100%; height: auto;
             display: block;
-            /* 그림자 제거 */
-            filter: none !important;
         }
 
-        /* 🎲 중앙 랜덤 섹션 */
-        .center-wrap {
+        /* 🎲 중앙 랜덤 섹션 (좌우 영역 위에 떠 있음) */
+        .center-overlay {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -58,41 +60,40 @@
         }
 
         .dice {
-            font-size: 40px;
+            font-size: 45px;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: inline-block;
             transition: 0.3s;
         }
         .dice:hover { transform: rotate(90deg); }
 
-        /* 🇰🇷 깔끔한 한국어 서체 적용된 카드 */
         .result-card {
             background: #fff;
-            padding: 15px 30px;
-            border: 1px solid #000; /* 화이트 배경에 대비되는 얇은 블랙 선 */
+            padding: 18px 35px;
+            border: 1px solid #000;
             font-family: var(--korean-font);
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #000;
-            min-width: 250px;
+            min-width: 280px;
         }
     </style>
 </head>
 <body>
 
-<div class="grid-container">
-    <div class="cell" style="grid-area: 1 / 1;">
+<div class="split-container">
+    <div class="pane">
         <div class="icon-btn" onclick="location.href='movie.html'">
             <img src="moovie.png" alt="MOVIE">
         </div>
     </div>
 
-    <div class="center-wrap">
+    <div class="center-overlay">
         <div class="dice" onclick="shuffle()">🎲</div>
         <div class="result-card" id="target">CLICK DICE</div>
     </div>
 
-    <div class="cell" style="grid-area: 2 / 2;">
+    <div class="pane">
         <div class="icon-btn" onclick="location.href='drama.html'">
             <img src="series.png" alt="DRAMA">
         </div>
@@ -114,11 +115,10 @@
         const pick = works[Math.floor(Math.random() * works.length)];
         display.innerText = pick;
         
-        // 아주 미세한 팝 애니메이션
         display.animate([
-            { transform: 'scale(0.98)', opacity: 0.8 },
+            { transform: 'scale(0.97)', opacity: 0.8 },
             { transform: 'scale(1)', opacity: 1 }
-        ], { duration: 200 });
+        ], { duration: 250 });
     }
 
     window.onload = shuffle;
