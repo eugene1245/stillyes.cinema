@@ -1,183 +1,76 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eugene's Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+    .main-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        width: 100vw; height: 100vh;
+        position: relative;
+    }
+
+    .section { display: flex; justify-content: center; align-items: center; }
+
+    /* 📦 택배 박스 스타일 */
+    .parcel-box {
+        width: 350px; height: 250px;
+        background: #d2a679; /* 박스 색상 */
+        position: relative;
+        box-shadow: 15px 15px 30px rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
+
+    /* 박스 테이프 표현 */
+    .parcel-box::after {
+        content: ""; position: absolute;
+        top: 0; left: 50%; width: 60px; height: 100%;
+        background: rgba(0,0,0,0.1); /* 투명 테이프 느낌 */
+        transform: translateX(-50%);
+    }
+
+    /* 📂 박스 개봉 (Hover) */
+    .content-card {
+        position: absolute;
+        top: -20px; left: 50%;
+        width: 90%; height: 100%;
+        background: #fff;
+        transform: translateX(-50%) scaleY(0);
+        transform-origin: bottom;
+        transition: 0.4s;
+        display: flex; justify-content: center; align-items: center;
+        font-size: 3rem; z-index: 10;
+        border: 1px solid #ddd;
+    }
+    .parcel-box:hover .content-card { transform: translateX(-50%) scaleY(1); }
+
+    /* 🌹 꽃다발 (중앙) */
+    .center-basket {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 5;
+    }
+    .message-card {
+        background: #fff; padding: 20px;
+        border: 1px solid #000;
+        font-family: 'JetBrains Mono'; font-size: 1rem;
+    }
+</style>
+
+<div class="main-layout">
+    <div class="section" style="grid-area: 1 / 1;">
+        <div class="parcel-box">
+            <div class="content-card">MOVIE</div>
+        </div>
+    </div>
     
-    <style>
-        :root {
-            --main-font: 'Bebas Neue', cursive;
-            --sub-font: 'JetBrains Mono', monospace;
-            --bg-color-tile: #fefefe;
-            --point-color-rose: #ff4081; /* 장미 꽃다발 포인트 색상 */
-        }
-
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background-color: var(--bg-color-tile);
-            background-image: radial-gradient(circle at center, #ffffff 0%, var(--bg-color-tile) 70%);
-            background-size: 80px 80px;
-            font-family: var(--main-font);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* 📦 택배 박스 컨테이너 */
-        .boxes-container {
-            position: relative;
-            width: 80%; /* 화면 너비에 맞춰 */
-            height: 80%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            transform: rotate(-10deg); /* 대각선 배치 */
-        }
-
-        .box-item {
-            position: absolute;
-            width: 250px; height: 180px;
-            background-color: #f0f0f0;
-            border: 2px solid #ccc;
-            box-shadow: 10px 10px 20px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.4s ease, background-color 0.4s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            overflow: hidden;
-            font-family: var(--sub-font);
-            font-size: 1.2rem;
-        }
-
-        /* 박스 뚜껑 효과 */
-        .box-item::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 50%;
-            background-color: #d0d0d0;
-            transform-origin: top;
-            transition: transform 0.4s ease;
-            border-bottom: 2px solid #ccc;
-        }
-
-        .box-item:hover::before {
-            transform: rotateX(90deg); /* 박스 뚜껑이 열리는 듯 */
-        }
-
-        .box-item.box-left { top: 15%; left: 10%; transform: rotate(-5deg); }
-        .box-item.box-right { bottom: 15%; right: 10%; transform: rotate(10deg); }
-
-        /* 카드 (박스 열릴 때 등장) */
-        .box-card {
-            position: absolute;
-            width: 80%; height: 80%;
-            background-color: #ffffff;
-            border: 1px solid #eee;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: var(--main-font);
-            font-size: 2rem;
-            letter-spacing: 2px;
-            pointer-events: none; /* 초반에는 클릭 안 됨 */
-        }
-
-        .box-item:hover .box-card {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-
-        /* 🌹 장미 꽃다발 바구니 */
-        .rose-basket {
-            position: absolute;
-            width: 280px; height: 200px;
-            background: url('https://i.imgur.com/your-rose-basket-image.png') no-repeat center center / contain; /* 유진이가 직접 찍은 이미지 URL 여기에! */
-            z-index: 10;
-            left: 50%; top: 50%;
-            transform: translate(-50%, -50%) rotate(5deg);
-            pointer-events: none; /* 텍스트 클릭 방해 X */
-        }
-
-        /* 메시지 카드 (꽃다발 위에) */
-        .message-card {
-            position: absolute;
-            width: 150px; height: 80px;
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
-            box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
-            left: 50%; top: 20%;
-            transform: translate(-50%, -50%) rotate(-3deg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: var(--sub-font);
-            font-size: 0.9rem;
-            color: #333;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .message-card:hover { transform: translate(-50%, -50%) rotate(0deg) scale(1.05); }
-
-        /* 모바일 대응 */
-        @media (max-width: 768px) {
-            .still-word, .yes-word { font-size: 15vw; }
-            .question { top: 30px; left: 30px; font-size: 1rem; }
-            .error-card { right: -120px; width: 120px; height: 60px; font-size: 0.7rem; }
-            .error-card .code { font-size: 1.5rem; }
-
-            .box-item { width: 180px; height: 120px; font-size: 1rem;}
-            .box-item.box-left { top: 10%; left: 5%; }
-            .box-item.box-right { bottom: 10%; right: 5%; }
-            .rose-basket { width: 200px; height: 150px; }
-            .message-card { width: 120px; height: 60px; font-size: 0.8rem; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="box-item box-left" onclick="location.href='movie.html'">
-        <div class="box-card">MOVIE</div>
-    </div>
-    <div class="box-item box-right" onclick="location.href='drama.html'">
-        <div class="box-card">DRAMA</div>
+    <div class="center-basket">
+        <div style="font-size: 50px;">🌹🧺</div> 
+        <div class="message-card">THE SUBSTANCE (2024)</div>
     </div>
 
-    <div class="rose-basket"></div>
-
-    <div class="message-card" id="reco-card">
-        오늘 유진의 픽: LOADING...
+    <div class="section" style="grid-area: 2 / 2;">
+        <div class="parcel-box">
+            <div class="content-card">DRAMA</div>
+        </div>
     </div>
-
-    <script>
-        // 랜덤 영화 추천 리스트 (유진이의 최애작들로 채워줘!)
-        const movieRecommendations = [
-            "HER (2013)",
-            "CHUNGKING EXPRESS (1994)",
-            "LITTLE FOREST (2018)",
-            "THE SUBSTANCE (2024)",
-            "PAST LIVES (2023)",
-            "CODA (2021)"
-        ];
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const randomIndex = Math.floor(Math.random() * movieRecommendations.length);
-            document.getElementById('reco-card').innerText = `오늘 유진의 픽:\n${movieRecommendations[randomIndex]}`;
-        });
-    </script>
-</body>
-</html>
+</div>
