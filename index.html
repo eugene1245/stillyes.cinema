@@ -9,86 +9,111 @@
     <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Dots:wght@400..700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --bg-color: #f7f7f7; /* 완전 흰색보다 약간 미색 섞인 게 더 감각적이야 */
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff;
-            /* 폰트 적용 - 점선 느낌이 아주 예술이야 */
+            background-color: var(--bg-color);
             font-family: "Edu AU VIC WA NT Dots", cursive;
             overflow: hidden;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 좌상단 질문: 투명도 75%의 무심한 공격(?) */
-        .question {
+        /* 배경 노이즈 질감 (유진 스타일!) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); /* 미세한 노이즈 텍스처 */
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        /* 1단계: 질문 섹션 */
+        .intro-overlay {
             position: absolute;
-            top: 50px;
-            left: 50px;
-            font-size: 1.5rem;
-            color: rgba(0, 0, 0, 0.75);
-            letter-spacing: -1px;
-            font-weight: 400;
-            /* 질문은 조금 더 딱딱한 기본 폰트로 해도 대비가 살 것 같지만 일단 맞춰둘게! */
-        }
-
-        /* 정중앙 대답: 화면을 압도하는 크기 */
-        .answer-container {
-            flex: 1;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            user-select: none;
+            background-color: var(--bg-color);
+            z-index: 10;
+            animation: fadeOut 1.5s forwards 2s; /* 2초 뒤에 1.5초 동안 사라짐 */
+        }
+
+        .question-text {
+            font-size: 2rem;
+            color: rgba(0, 0, 0, 0.6);
+            letter-spacing: 2px;
+            animation: textFocus 1.5s ease-out;
+        }
+
+        /* 2단계: 메인 콘텐츠 */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 1s forwards 3.5s; /* 질문이 사라진 뒤 나타남 */
+        }
+
+        /* 영화 슬레이트 아이콘 (심플한 SVG) */
+        .cinema-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: -20px;
+            opacity: 0.8;
+            fill: #000;
         }
 
         .main-text {
-            font-size: 18vw; /* 더 키웠어! 아주 꽉 차게 */
+            font-size: 16vw;
             color: #000;
-            line-height: 0.8;
-            letter-spacing: -8px; /* 자간을 더 좁혀서 뾰족한 느낌 극대화 */
+            letter-spacing: -6px;
             margin: 0;
+            user-select: none;
         }
 
-        /* 클릭 가능한 'YES' 부분 */
         .clickable-yes {
             cursor: pointer;
-            position: relative;
-            display: inline-block;
-            transition: transform 0.1s ease;
+            transition: all 0.3s;
         }
 
-        /* 클릭할 때 살짝 커지는 느낌만 (정제된 UI 탈피) */
-        .clickable-yes:active {
-            transform: scale(1.1);
+        .clickable-yes:hover {
+            color: #ff3e00; /* 유진이의 그 토마토 레드 포인트! */
+            font-style: italic;
         }
 
-        /* 폰트 로딩 전 어색함 방지 */
-        .edu-au-vic-wa-nt-dots-regular {
-            font-family: "Edu AU VIC WA NT Dots", cursive;
-            font-weight: 400;
-            font-style: normal;
-        }
+        /* 애니메이션 정의 */
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes textFocus { from { filter: blur(10px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
+
     </style>
 </head>
 <body>
 
-    <div class="question">YOU ARE STILL WATCHING THIS?</div>
-
-    <div class="answer-container">
-        <h1 class="main-text">
-            Still <span class="clickable-yes" onclick="enterArchive()">YES.</span>
-        </h1>
+    <div class="intro-overlay">
+        <div class="question-text">YOU ARE STILL WATCHING THIS?</div>
     </div>
 
-    <script>
-        function enterArchive() {
-            // YES 클릭 시 다음으로!
-            console.log("Enter the archive...");
-            location.href = 'main.html';
-        }
-    </script>
+    <div class="main-content">
+        <svg class="cinema-icon" viewBox="0 0 24 24">
+            <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4h-2l2 4h-3l-2-4h-3v14h18v-14h-3z"/>
+        </svg>
+        <h1 class="main-text">
+            Still <span class="clickable-yes" onclick="location.href='main.html'">YES.</span>
+        </h1>
+    </div>
 
 </body>
 </html>
