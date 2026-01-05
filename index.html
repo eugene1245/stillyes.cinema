@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Still yes.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Dots:wght@400..700&display=swap" rel="stylesheet">
+    
     <style>
         body, html {
             margin: 0;
@@ -12,25 +15,28 @@
             width: 100%;
             height: 100%;
             background-color: #ffffff;
-            font-family: 'Edu VIC WA NT Beginner', cursive; /* 유진이의 원픽 서체 스타일 */
+            /* 폰트 적용 - 점선 느낌이 아주 예술이야 */
+            font-family: "Edu AU VIC WA NT Dots", cursive;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* 좌상단 질문: 날 서 보이지만 투명도로 힘을 뺀 느낌 */
+        /* 좌상단 질문: 투명도 75%의 무심한 공격(?) */
         .question {
             position: absolute;
-            top: 40px;
-            left: 40px;
-            font-size: 1.2rem;
-            color: rgba(0, 0, 0, 0.75); /* 투명도 7-80% */
-            letter-spacing: -0.5px;
+            top: 50px;
+            left: 50px;
+            font-size: 1.5rem;
+            color: rgba(0, 0, 0, 0.75);
+            letter-spacing: -1px;
             font-weight: 400;
+            /* 질문은 조금 더 딱딱한 기본 폰트로 해도 대비가 살 것 같지만 일단 맞춰둘게! */
         }
 
-        /* 정중앙 대답: 압도적인 크기 */
+        /* 정중앙 대답: 화면을 압도하는 크기 */
         .answer-container {
-            width: 100%;
-            height: 100%;
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -38,29 +44,31 @@
         }
 
         .main-text {
-            font-size: 15vw; /* 화면 너비에 비례해서 엄청나게 커짐! */
+            font-size: 18vw; /* 더 키웠어! 아주 꽉 차게 */
             color: #000;
             line-height: 0.8;
-            letter-spacing: -5px;
+            letter-spacing: -8px; /* 자간을 더 좁혀서 뾰족한 느낌 극대화 */
+            margin: 0;
         }
 
-        /* 클릭 가능한 'YES' 부분만 따로 설정 */
+        /* 클릭 가능한 'YES' 부분 */
         .clickable-yes {
             cursor: pointer;
             position: relative;
-            transition: all 0.2s ease;
+            display: inline-block;
+            transition: transform 0.1s ease;
         }
 
-        /* 마우스를 올렸을 때만 아주 살짝 번지는 듯한 효과 (날 선 느낌 유지) */
-        .clickable-yes:hover {
-            color: #000;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        /* 클릭할 때 살짝 커지는 느낌만 (정제된 UI 탈피) */
+        .clickable-yes:active {
+            transform: scale(1.1);
         }
 
-        /* 모바일 대응 */
-        @media (max-width: 768px) {
-            .main-text { font-size: 25vw; }
-            .question { top: 20px; left: 20px; font-size: 0.9rem; }
+        /* 폰트 로딩 전 어색함 방지 */
+        .edu-au-vic-wa-nt-dots-regular {
+            font-family: "Edu AU VIC WA NT Dots", cursive;
+            font-weight: 400;
+            font-style: normal;
         }
     </style>
 </head>
@@ -76,7 +84,8 @@
 
     <script>
         function enterArchive() {
-            // 클릭 시 다음 페이지로 이동 (나중에 main.html 만들면 거기로 감!)
+            // YES 클릭 시 다음으로!
+            console.log("Enter the archive...");
             location.href = 'main.html';
         }
     </script>
