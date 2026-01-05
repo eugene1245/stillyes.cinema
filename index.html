@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Still yes.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* 순백색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .title {
+            font-size: 5rem; /* 아주 크게! */
+            font-weight: 500;
+            letter-spacing: -2px; /* 자간을 좁혀서 날카로운 느낌 */
+            color: #000;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        /* 마우스를 올렸을 때 마치 에러가 난 것처럼 살짝 흔들리는 효과(유진 스타일) */
+        .title:hover {
+            font-style: italic;
+            color: #ff3e00; /* 유진이의 포인트 컬러: 강렬한 레드-오렌지 */
+        }
+
+        .sub-text {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        /* 입장을 위한 '영수증 라벨' 스타일 버튼 */
+        .enter-btn {
+            margin-top: 40px;
+            padding: 5px 10px;
+            border: 1px solid #000;
+            background: none;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .enter-btn:hover {
+            background-color: #000;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" onclick="location.href='main.html'">
+        <div class="title">Still yes.</div>
+        <div class="sub-text">Are you still watching this? — (YES)</div>
+        <button class="enter-btn">CLICK TO ENTER THE ARCHIVE</button>
+    </div>
+
+</body>
+</html>
