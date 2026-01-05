@@ -1,0 +1,66 @@
+<style>
+    /* 메인 그리드 레이아웃 */
+    .main-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(12, 1fr);
+        width: 100vw; height: 100vh;
+        padding: 40px; box-sizing: border-box;
+    }
+
+    /* 📺 랜덤 상영창 (광고창 스타일) */
+    .now-playing-box {
+        grid-column: 8 / 12;
+        grid-row: 2 / 5;
+        border: 1px solid #000;
+        padding: 15px;
+        display: flex; flex-direction: column;
+        justify-content: space-between;
+        background: #fff;
+        box-shadow: 10px 10px 0px var(--point-color); /* 포인트 컬러로 그림자 */
+    }
+
+    /* 🏷️ 미디어 카테고리 (날카로운 배치) */
+    .category {
+        font-family: 'Bebas Neue';
+        font-size: 8vw;
+        line-height: 0.8;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .category:hover { transform: skewX(-10deg); color: var(--point-color); }
+
+    .cat-movie { grid-column: 1 / 6; grid-row: 3; }
+    .cat-drama { grid-column: 2 / 7; grid-row: 6; }
+    .cat-book  { grid-column: 1 / 5; grid-row: 9; }
+
+    /* 🐾 숨겨진 상징물 (샤샤 발바닥 같은 거) */
+    .hidden-symbol {
+        position: absolute;
+        width: 15px; height: 15px;
+        opacity: 0.1; /* 보일 듯 말 듯 */
+        cursor: help;
+    }
+    .hidden-symbol:hover { opacity: 1; filter: invert(1); }
+</style>
+
+<div class="main-grid">
+    <div class="now-playing-box">
+        <span style="font-size: 0.7rem; font-family: 'JetBrains Mono'">[ NOW STREAMING ]</span>
+        <h3 id="random-pick" style="font-family: var(--font-dots); font-size: 1.5rem;">LOADING...</h3>
+        <span style="font-size: 0.6rem; text-align: right;">N-TH VIEWING: 24</span>
+    </div>
+
+    <div class="category cat-movie">MOVIES</div>
+    <div class="category cat-drama">DRAMA</div>
+    <div class="category cat-book">BOOKS</div>
+
+    <div class="hidden-symbol" style="top: 80%; left: 10%;">💊</div>
+    <div class="hidden-symbol" style="top: 20%; right: 5%;">🐾</div>
+</div>
+
+<script>
+    // 유진의 픽들 중 랜덤으로 하나 띄우기
+    const picks = ["HER", "THE SUBSTANCE", "LITTLE FOREST", "CHUNGKING EXPRESS"];
+    document.getElementById('random-pick').innerText = picks[Math.floor(Math.random() * picks.length)];
+</script>
