@@ -18,25 +18,22 @@
             font-family: 'Bebas Neue', cursive;
         }
 
-        /* 📏 세로로 2등분 (좌, 우) */
         .split-container {
-            display: flex; /* flex로 바꾸면 좌우 정렬이 더 직관적이야 */
+            display: flex;
             width: 100vw;
             height: 100vh;
             position: relative;
         }
 
-        /* 왼쪽과 오른쪽 영역 공통 스타일 */
         .pane {
-            flex: 1; /* 화면을 정확히 1:1로 나눠 가짐 */
+            flex: 1;
             display: flex;
-            justify-content: center; /* 가로 정중앙 */
-            align-items: center;     /* 세로 정중앙 */
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 🖼️ 이미지 아이콘 (그림자 없음) */
         .icon-btn {
-            width: 380px; /* 2등분이니까 크기를 조금 더 키워도 시원해 보여 */
+            width: 380px;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
@@ -50,7 +47,6 @@
             display: block;
         }
 
-        /* 🎲 중앙 랜덤 섹션 (좌우 영역 위에 떠 있음) */
         .center-overlay {
             position: absolute;
             top: 50%; left: 50%;
@@ -59,14 +55,28 @@
             text-align: center;
         }
 
-        .dice {
+        /* 🦷 치아 이모지 스타일 */
+        .teeth {
             font-size: 45px;
             cursor: pointer;
             margin-bottom: 12px;
             display: inline-block;
             transition: 0.3s;
         }
-        .dice:hover { transform: rotate(90deg); }
+
+        /* 1. 흔들리는 동작 정의 */
+        @keyframes jiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(15deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* 2. 마우스를 올렸을 때 흔들리게 (클래스명 통일!) */
+        .teeth:hover {
+            animation: jiggle 0.3s infinite linear;
+        }
 
         .result-card {
             background: #fff;
@@ -89,8 +99,8 @@
     </div>
 
     <div class="center-overlay">
-        <div class="dice" onclick="shuffle()">🎲</div>
-        <div class="result-card" id="target">CLICK DICE</div>
+        <div class="teeth" onclick="shuffle()">🦷</div>
+        <div class="result-card" id="target">CLICK TOOTH</div>
     </div>
 
     <div class="pane">
